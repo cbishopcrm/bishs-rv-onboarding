@@ -10,31 +10,48 @@ const CHROME = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 const browser = await puppeteer.launch({
   executablePath: CHROME,
   headless: 'new',
-  defaultViewport: { width: 1440, height: 900 },
+  defaultViewport: { width: 1440, height: 1200, deviceScaleFactor: 2 },
   args: ['--hide-scrollbars', '--disable-gpu']
 });
+
+async function clipEl(page, selector, outPath, pad = 20) {
+  const rect = await page.evaluate((sel) => {
+    const el = document.querySelector(sel);
+    if (!el) return null;
+    el.scrollIntoView({ block: 'start' });
+    window.scrollTo(0, 0);
+    const r = el.getBoundingClientRect();
+    return { x: r.x, y: r.y, width: r.width, height: r.height };
+  }, selector);
+  if (!rect) throw new Error('No element for: ' + selector);
+  await page.screenshot({
+    path: outPath,
+    clip: {
+      x: Math.max(0, rect.x - pad),
+      y: Math.max(0, rect.y - pad),
+      width: rect.width + pad * 2,
+      height: rect.height + pad * 2
+    }
+  });
+}
 
 try {
   const page = await browser.newPage();
 
-  // Step 1: login page
+  // Step 1: login card
   await page.goto('https://bishsrv.thecrm.com/login/', { waitUntil: 'networkidle2', timeout: 60000 });
   await new Promise(r => setTimeout(r, 1500));
-  await page.screenshot({ path: path.join(outDir, 'step1-login.png'), fullPage: false });
+  await clipEl(page, '.login--form', path.join(outDir, 'step1-login.png'), 24);
   console.log('step1-login.png saved');
 
-  // Step 2: signup / registration password gate
+  // Step 2: registration password card
   await page.goto('https://bishsrv.thecrm.com/signup/', { waitUntil: 'networkidle2', timeout: 60000 });
   await new Promise(r => setTimeout(r, 1500));
-  await page.screenshot({ path: path.join(outDir, 'step2-register-password.png'), fullPage: false });
+  await clipEl(page, '.signup--home', path.join(outDir, 'step2-register-password.png'), 24);
   console.log('step2-register-password.png saved');
 
-  // Step 3: fill the dealership password and continue to the user info form
-  const pwSelector = 'input[type="password"], input[placeholder="Password"]';
-  await page.waitForSelector(pwSelector, { timeout: 15000 });
-  await page.type(pwSelector, 'GoTheCRM');
-
-  // Click the Continue button
+  // Step 3: fill password, continue, clip the profile form
+  await page.type('input[placeholder="Password"]', 'GoTheCRM');
   const buttons = await page.$$('button, input[type="submit"]');
   for (const b of buttons) {
     const txt = await (await b.getProperty('textContent')).jsonValue();
@@ -44,28 +61,26 @@ try {
       break;
     }
   }
+  await new Promise(r => setTimeout(r, 4500));
 
-  await new Promise(r => setTimeout(r, 4000));
-
-  // Try to dismiss any error modal (username-check popup)
-  try {
-    await page.evaluate(() => {
-      document.querySelectorAll('button').forEach(b => {
-        if ((b.textContent || '').trim().toLowerCase() === 'close') b.click();
-      });
-      // Also clear any pre-filled username/password so form looks clean
-      document.querySelectorAll('input').forEach(i => {
-        if (['text','password','tel','email'].includes(i.type)) i.value = '';
-      });
+  // Dismiss "Username already taken" modal and clear pre-filled fields
+  await page.evaluate(() => {
+    document.querySelectorAll('button').forEach(b => {
+      if ((b.textContent || '').trim().toLowerCase() === 'close') b.click();
     });
-  } catch {}
+    document.querySelectorAll('input').forEach(i => {
+      if (['text','password','tel','email'].includes(i.type)) i.value = '';
+    });
+    window.scrollTo(0, 0);
+  });
+  await new Promise(r => setTimeout(r, 800));
 
-  await new Promise(r => setTimeout(r, 1500));
-  await page.screenshot({ path: path.join(outDir, 'step3-user-info-form.png'), fullPage: false });
+  await clipEl(page, '.signup--form', path.join(outDir, 'step3-user-info-form.png'), 24);
   console.log('step3-user-info-form.png saved');
 
 } catch (err) {
   console.error('Error:', err);
+  process.exitCode = 1;
 } finally {
   await browser.close();
 }
