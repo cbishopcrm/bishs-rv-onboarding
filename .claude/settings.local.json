@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:bish-465c1l5.gamma.site)"
+    ]
+  }
+}

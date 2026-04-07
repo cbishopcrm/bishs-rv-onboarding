@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bish's User Onboarding Guide — TheCRM</title>
+<meta name="description" content="Step-by-step onboarding guide for Bish's RV sales team on TheCRM platform." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b1020;
+    --bg-soft: #111832;
+    --surface: #ffffff;
+    --ink: #0f172a;
+    --ink-2: #475569;
+    --muted: #64748b;
+    --brand: #ef3d2a;
+    --brand-2: #f97316;
+    --accent: #2563eb;
+    --border: #e2e8f0;
+    --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    color: var(--ink);
+    background: #f6f7fb;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Top Nav */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: saturate(180%) blur(10px);
+    background: rgba(255,255,255,0.85);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: 1120px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; color: var(--ink); }
+  .brand .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--brand); box-shadow: 0 0 0 4px rgba(239,61,42,0.15); }
+  .nav-links { display: flex; gap: 18px; flex-wrap: wrap; }
+  .nav-links a { color: var(--ink-2); font-weight: 500; font-size: 14px; }
+  .nav-links a:hover { color: var(--brand); text-decoration: none; }
+
+  /* Hero */
+  .hero {
+    background: radial-gradient(1200px 500px at 20% -10%, rgba(249,115,22,0.25), transparent 60%),
+                radial-gradient(900px 500px at 90% 10%, rgba(37,99,235,0.25), transparent 60%),
+                linear-gradient(180deg, #0b1020 0%, #111832 100%);
+    color: #fff;
+    padding: 96px 24px 120px;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .hero h1 {
+    font-size: clamp(36px, 6vw, 64px);
+    line-height: 1.05;
+    margin: 0 0 18px;
+    letter-spacing: -0.02em;
+    font-weight: 800;
+  }
+  .hero h1 span { background: linear-gradient(90deg, #f97316, #ef3d2a); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero p { max-width: 760px; margin: 0 auto; color: #cbd5e1; font-size: 18px; }
+  .hero .cta {
+    display: inline-flex; gap: 12px; margin-top: 28px; flex-wrap: wrap; justify-content: center;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 22px; border-radius: 999px; font-weight: 600; font-size: 15px;
+    border: 1px solid transparent; cursor: pointer; transition: all .2s ease;
+  }
+  .btn-primary { background: var(--brand); color: white; }
+  .btn-primary:hover { background: #d93320; text-decoration: none; transform: translateY(-1px); }
+  .btn-ghost { background: rgba(255,255,255,0.08); color: #fff; border-color: rgba(255,255,255,0.22); }
+  .btn-ghost:hover { background: rgba(255,255,255,0.14); text-decoration: none; }
+
+  /* Sections */
+  main { max-width: 1120px; margin: -60px auto 0; padding: 0 24px 80px; position: relative; }
+  section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px 36px;
+    margin-bottom: 28px;
+    box-shadow: var(--shadow);
+  }
+  section h2 {
+    font-size: clamp(24px, 3vw, 32px);
+    margin: 0 0 10px;
+    letter-spacing: -0.01em;
+    font-weight: 800;
+  }
+  section .lead {
+    color: var(--ink-2); font-size: 16px; margin: 0 0 24px; max-width: 800px;
+  }
+  h3 { font-size: 18px; margin: 0 0 8px; font-weight: 700; }
+
+  /* Steps */
+  .steps { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .step {
+    background: #f9fafb;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    position: relative;
+  }
+  .step .n {
+    width: 30px; height: 30px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--brand); color: white; font-weight: 700; font-size: 14px; margin-bottom: 12px;
+  }
+  .step p { margin: 6px 0 0; color: var(--ink-2); font-size: 14.5px; }
+
+  /* Feature grid */
+  .grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .card {
+    background: #f9fafb;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px;
+  }
+  .card p { color: var(--ink-2); font-size: 15px; margin: 8px 0 0; }
+
+  /* Video embed */
+  .video-wrap {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+    background: #000;
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-top: 16px;
+    box-shadow: 0 8px 24px rgba(15,23,42,0.12);
+  }
+  .video-wrap iframe {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%; border: 0;
+  }
+  .video-block {
+    margin-top: 20px;
+  }
+  .video-block .label {
+    display: inline-block; font-size: 12px; font-weight: 600; text-transform: uppercase;
+    color: var(--brand); letter-spacing: 0.06em; margin-bottom: 6px;
+  }
+
+  /* Callout */
+  .callout {
+    background: linear-gradient(135deg, #fff7ed, #ffedd5);
+    border: 1px solid #fed7aa;
+    color: #7c2d12;
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    font-size: 14.5px;
+  }
+
+  /* Support */
+  .support { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .support .card strong { color: var(--ink); }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 30px 20px 40px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  /* App buttons */
+  .app-btns { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+  .app-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--ink); color: #fff; padding: 12px 20px; border-radius: 12px;
+    font-weight: 600; font-size: 14px;
+  }
+  .app-btn:hover { text-decoration: none; background: #1e293b; }
+
+  @media (max-width: 640px) {
+    .hero { padding: 72px 20px 100px; }
+    section { padding: 28px 22px; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="brand"><span class="dot"></span> Bish's Onboarding Guide</div>
+    <div class="nav-links">
+      <a href="#register">Register</a>
+      <a href="#welcome">Welcome</a>
+      <a href="#customize">Customize</a>
+      <a href="#customers">Customers</a>
+      <a href="#communicate">Communicate</a>
+      <a href="#credit">Credit</a>
+      <a href="#basics">Basics</a>
+      <a href="#schedule">Schedule</a>
+      <a href="#app">App</a>
+      <a href="#support">Support</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <h1>Bish's <span>User Onboarding</span> Guide</h1>
+  <p>Welcome to TheCRM platform, where cutting-edge AI technology meets seamless customer relationship management. This guide walks you through everything you need to get started — step by step.</p>
+  <div class="cta">
+    <a href="#register" class="btn btn-primary">Start Onboarding →</a>
+    <a href="#support" class="btn btn-ghost">Get Support</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- Register -->
+  <section id="register">
+    <h2>1. Register for Your CRM Account</h2>
+    <p class="lead">Follow these four simple steps to create your user account and get your access approved.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <h3>Access Log-in Page</h3>
+        <p>Navigate to your group login page for TheCRM. Look for the "Register Here" option.</p>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <h3>Enter Registration Password</h3>
+        <p>Enter the new user registration password. Typically, our dealership's password is <strong>"GoTheCRM"</strong>. Some dealerships may use a unique password — contact your CRM admin or support team for assistance.</p>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <h3>Fill Out User Information</h3>
+        <p>Provide all the requested details, including your store's area code in the <em>"Desired Direct Connect Area Code"</em> field.</p>
+      </div>
+      <div class="step">
+        <div class="n">4</div>
+        <h3>Wait for Approval</h3>
+        <p>Your profile has been created! If you do not receive a confirmation text within 30 minutes, reach out to your internal team to finalize and approve your access.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Welcome -->
+  <section id="welcome">
+    <h2>2. Welcome to TheCRM</h2>
+    <p class="lead">Once you're logged in, get familiar with your dashboard and your main working view.</p>
+    <div class="grid">
+      <div class="card">
+        <h3>Your MyDay Dashboard</h3>
+        <p>When you first log in, you'll be taken to your personalized dashboard. This is your central hub to manage your sales activities and customer relationships.</p>
+      </div>
+      <div class="card">
+        <h3>SalesDaily Page</h3>
+        <p>Your main view will be the SalesDaily page, providing a comprehensive overview of your sales pipeline, upcoming tasks, and key customer information. This is where you'll spend most of your time.</p>
+        <div class="callout" style="margin-top:12px;">Note: Your MyDay may look slightly different depending on your dealership configuration.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Customize -->
+  <section id="customize">
+    <h2>3. Customize Your CRM Experience</h2>
+    <p class="lead">Get the most out of TheCRM by personalizing your settings and notifications. With just a few clicks, you can tailor the platform to fit your unique workflow.</p>
+
+    <div class="video-block">
+      <div class="label">Video — Customize Notifications</div>
+      <h3>Simple Customization</h3>
+      <p style="color:var(--ink-2);">Navigate to the settings icon in the top left corner to access customization options — from notification preferences to display settings, make TheCRM truly yours.</p>
+      <div class="video-wrap">
+        <iframe src="https://drive.google.com/file/d/1HqpUDG9BcLXL7VNrQeXSX_kwlZAZ74lQ/preview" allow="autoplay" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <div class="video-block">
+      <div class="label">Video — Updating Notification Settings</div>
+      <h3>Notification Settings</h3>
+      <p style="color:var(--ink-2);">Fine-tune how and when you get notified so you never miss a hot lead.</p>
+      <div class="video-wrap">
+        <iframe src="https://drive.google.com/file/d/1NT7GTv93Sl5ti51pMPhnQXC0Tmrx6glW/preview" allow="autoplay" allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Customers -->
+  <section id="customers">
+    <h2>4. Adding Customers</h2>
+    <p class="lead">Adding new customers to your CRM is the first step in building lasting relationships. You can do this on desktop, through the mobile app, or by simply chatting with OliviaAI.</p>
+
+    <div class="video-block">
+      <div class="label">Video — How to Add a Customer</div>
+      <h3>Add a New Customer</h3>
+      <div class="video-wrap">
+        <iframe src="https://drive.google.com/file/d/1Jf3IG5O8bznns5liKqPWjQXaoN5XH2Cu/preview" allow="autoplay" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <div class="video-block">
+      <div class="label">Video — How to Add a Co-Buyer</div>
+      <h3>Adding a Co-Buyer</h3>
+      <p style="color:var(--ink-2);">This video will guide you through the process of adding a co-buyer to a customer record — an important step in the sales process.</p>
+      <div class="video-wrap">
+        <iframe src="https://drive.google.com/file/d/1OeAqFlcGAoahS7ckPALdYMAC7GokFlOG/preview" allow="autoplay" allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Communicate -->
+  <section id="communicate">
+    <h2>5. Communicating With Customers</h2>
+    <p class="lead">Effective communication is the foundation of strong customer relationships. TheCRM gives you a powerful suite of tools to engage with clients professionally and personally.</p>
+    <div class="grid">
+      <div class="card">
+        <h3>📧 Sending Emails</h3>
+        <p>Easily compose and send professional emails — follow-ups, special offers, or info requests. Olivia is always there to help you craft a personalized email or spell-check what you've written.</p>
+      </div>
+      <div class="card">
+        <h3>💬 Sending Texts</h3>
+        <p>SMS is one of the fastest ways to reach customers. Send quick updates, reminders, or personalized messages directly from TheCRM.</p>
+      </div>
+      <div class="card">
+        <h3>📸 Photos, Videos & Multimedia</h3>
+        <p>Upload and send videos, images, or other multimedia content. Perfect for showcasing units, providing visual instructions, or adding a personal touch.</p>
+      </div>
+    </div>
+
+    <div class="video-block">
+      <div class="label">Video — Making an Outbound Call</div>
+      <h3>Outbound Calls</h3>
+      <div class="video-wrap">
+        <iframe src="https://drive.google.com/file/d/1XQTBagU74qWcRtMtadoeihbFOelKoEe1/preview" allow="autoplay" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <div class="video-block">
+      <div class="label">Video — How to Send an E-Brochure</div>
+      <h3>E-Brochures</h3>
+      <p style="color:var(--ink-2);">Brochures provide a dynamic way to connect with customers through text or email. Personalize them with custom taglines, images, text, and optional pricing. Customers can apply for credit, schedule visits, explore inventory, or reach out directly.</p>
+      <div class="video-wrap">
+        <iframe src="https://drive.google.com/file/d/1LlIe190jzeUfmp2AqIQuBro5Fg8QXpTO/preview" allow="autoplay" allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Credit -->
+  <section id="credit">
+    <h2>6. Is Your Customer Moving Closer to a Purchase?</h2>
+    <p class="lead">Streamline the buying process and close deals faster. The videos below walk you through sending and finding secure credit applications via text or email.</p>
+
+    <div class="video-block">
+      <div class="label">Video — Send a Credit Application</div>
+      <h3>Send a Credit Application to Your Customers</h3>
+      <div class="video-wrap">
+        <iframe src="https://drive.google.com/file/d/1E-Y7YYEut03NSURXRRVfV6l1W-p9rL31/preview" allow="autoplay" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <div class="video-block">
+      <div class="label">Video — Find a Submitted Credit Application</div>
+      <h3>Find a Credit Application That Has Been Submitted</h3>
+      <div class="video-wrap">
+        <iframe src="https://drive.google.com/file/d/1MeuD7UOssGYqv5MwF073yYbULeDoSwiX/preview" allow="autoplay" allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Basics -->
+  <section id="basics">
+    <h2>7. CRM Basics: How Do I…?</h2>
+    <p class="lead">Step-by-step guidance on the most common tasks — adding a unit of interest, processing a trade-in, searching for customers, and more.</p>
+
+    <div class="video-block">
+      <div class="label">Video — Add a Unit of Interest & Trade-In</div>
+      <h3>Add a Unit of Interest and a Trade-In</h3>
+      <div class="video-wrap">
+        <iframe src="https://drive.google.com/file/d/1XAf0_F1YT5Ld33owV7-zV8BbzuGTf_HR/preview" allow="autoplay" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <div class="video-block">
+      <div class="label">Video — Search for Customers</div>
+      <h3>Search for Customers in the CRM</h3>
+      <div class="video-wrap">
+        <iframe src="https://drive.google.com/file/d/1dk74vopTWWkpPjNU7deXPQ4gxJ8iceUZ/preview" allow="autoplay" allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Schedule -->
+  <section id="schedule">
+    <h2>8. Schedule with Ease</h2>
+    <p class="lead">Take control of your CRM follow-up. Book, confirm, reschedule, or cancel appointments directly through TheCRM — and sync with your calendar for seamless scheduling.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Scheduling Appointments</h3>
+        <p>Effortlessly book meetings and appointments with customers directly through TheCRM. Sync with your calendar to ensure smooth scheduling every time.</p>
+      </div>
+      <div class="card">
+        <h3>Take Control of Follow-Up</h3>
+        <p>Easily schedule contact appointments to connect with your customers at exactly the right time — no lead left behind.</p>
+      </div>
+    </div>
+
+    <div class="video-block">
+      <div class="label">Video — Adjusting Appointments</div>
+      <h3>Adjusting Appointments</h3>
+      <p style="color:var(--ink-2);">Quickly confirm, reschedule, or cancel appointments with ease.</p>
+      <div class="video-wrap">
+        <iframe src="https://drive.google.com/file/d/1KlW61yH_uL_htgorzhQhPFckR-4gJo4T/preview" allow="autoplay" allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- App -->
+  <section id="app">
+    <h2>9. Download TheCRM App</h2>
+    <p class="lead">Experience the full power of TheCRM on your mobile device. Barcode scanning for quick vehicle and customer entry, instant VIN capture, and direct image uploads — stay connected whether you're on the lot or away from your desk.</p>
+    <div class="app-btns">
+      <a class="app-btn" href="https://apps.apple.com/us/app/thecrm/id1458220698" target="_blank" rel="noopener"> Download on Apple iOS</a>
+      <a class="app-btn" href="https://play.google.com/store/apps/details?id=com.thecrm.thecrm" target="_blank" rel="noopener">▶ Download on Google Play</a>
+    </div>
+  </section>
+
+  <!-- Support -->
+  <section id="support">
+    <h2>10. Get Support</h2>
+    <p class="lead">We're here to help. Reach out anytime through the options below.</p>
+    <div class="support">
+      <div class="card">
+        <h3>📞 Online Support</h3>
+        <p><strong>Email:</strong> <a href="mailto:support@TheCRM.com">support@TheCRM.com</a><br>
+        <strong>Phone:</strong> <a href="tel:+18664602999">(866) 460-2999</a><br>
+        <strong>Live Chat:</strong> Log in to TheCRM, click "Get Help" at the bottom right, and choose "Send Us a Message" to chat with an agent.</p>
+      </div>
+      <div class="card">
+        <h3>🎥 Training Videos</h3>
+        <p>Log in to the CRM and click on <strong>MyDay</strong>, then click the blue training box in the upper left-hand corner. You'll find additional videos on adding customers, making outbound calls, navigating follow-ups, and more.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  © <span id="yr"></span> Bish's RV — Onboarding Guide · Built for our dealership teams.
+</footer>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
