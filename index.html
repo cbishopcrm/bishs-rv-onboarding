@@ -190,6 +190,44 @@
   /* Bigger screenshot for the long profile form */
   .reg-step-content img.tall { max-width: 260px; }
 
+  /* ============ Screenshot figure stack ============ */
+  .shot-stack { display: grid; gap: 20px; }
+  .shot {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1.55fr 1fr;
+    gap: 18px;
+    align-items: center;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--brand);
+    border-radius: 6px;
+    padding: 14px;
+  }
+  .shot img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+    border: 1px solid #0f172a;
+    box-shadow: 0 4px 14px rgba(0, 58, 73, 0.14);
+    background: #0b0f14;
+  }
+  .shot figcaption h3 {
+    margin: 0 0 6px;
+    font-size: 16px;
+    color: var(--brand-dark);
+  }
+  .shot figcaption p {
+    margin: 0;
+    font-size: 13.5px;
+    color: var(--ink-2);
+    line-height: 1.55;
+  }
+  @media (max-width: 720px) {
+    .shot { grid-template-columns: 1fr; }
+  }
+
   /* ============ Two-col row (text + video placeholder) ============ */
   .row {
     display: grid;
@@ -443,17 +481,26 @@
 
   <!-- ============ 2. Welcome ============ -->
   <div class="sec-head"><div class="bar"></div><h2>Welcome to TheCRM</h2></div>
+  <p class="sec-lead">When you first log in, you'll land on your personalized MyDay dashboard — your central hub for everything sales.</p>
 
-  <div class="row">
-    <div>
-      <h3>Your MyDay Dashboard</h3>
-      <p>When you first log in, you'll land on your personalized dashboard — your central hub for managing sales activity and customer relationships.</p>
-    </div>
-    <div>
-      <h3>SalesDaily Page</h3>
-      <p>Your main view is the SalesDaily page, providing a comprehensive overview of your pipeline, upcoming tasks, and key customer info. <span class="note">Note: your MyDay may look slightly different.</span></p>
-    </div>
+  <div class="shot-stack">
+    <figure class="shot">
+      <img src="assets/salesdaily-cmi.png" alt="SalesDaily CMI dashboard" loading="lazy" />
+      <figcaption>
+        <h3>SalesDaily CMI</h3>
+        <p>Your main daily view — a real-time snapshot of hot leads, follow-ups, confirmation calls, and un-responded texts/emails. This is where you'll spend most of your time.</p>
+      </figcaption>
+    </figure>
+
+    <figure class="shot">
+      <img src="assets/cmi-outfitter.png" alt="CMI Outfitter dashboard" loading="lazy" />
+      <figcaption>
+        <h3>CMI Outfitter</h3>
+        <p>A deeper look at unsold deals, customer VOI price changes, customers you've touched, and unsold leads broken out by model and by salesperson.</p>
+      </figcaption>
+    </figure>
   </div>
+  <p class="note" style="margin-top:10px;">Note: Your MyDay may look slightly different depending on your role and permissions.</p>
 
   <!-- ============ 3. Customize ============ -->
   <div class="sec-head"><div class="bar"></div><h2>Customize Your CRM Experience</h2></div>
