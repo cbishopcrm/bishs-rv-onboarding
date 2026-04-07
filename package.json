@@ -1,0 +1,24 @@
+{
+  "name": "bish's-rv-onboarding-guide",
+  "version": "1.0.0",
+  "description": "Static onboarding site for Bish's RV sales team on TheCRM platform.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cbishopcrm/bishs-rv-onboarding.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/cbishopcrm/bishs-rv-onboarding/issues"
+  },
+  "homepage": "https://github.com/cbishopcrm/bishs-rv-onboarding#readme",
+  "dependencies": {
+    "puppeteer-core": "^24.40.0"
+  }
+}

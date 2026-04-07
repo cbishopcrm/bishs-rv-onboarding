@@ -105,10 +105,41 @@
     transition: transform .2s;
   }
   details.register[open] summary::after { transform: rotate(180deg); }
-  details.register .reg-body { margin-top: 16px; font-size: 14.5px; color: var(--ink-2); }
-  details.register .reg-body ol { padding-left: 20px; }
-  details.register .reg-body li { margin-bottom: 10px; }
-  details.register .reg-body li strong { color: var(--ink); font-family: 'Source Sans 3', sans-serif; }
+  details.register .reg-body { margin-top: 18px; font-size: 14.5px; color: var(--ink-2); }
+  details.register .reg-body .reg-step {
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    gap: 14px;
+    padding: 18px 0;
+    border-top: 1px solid var(--border);
+  }
+  details.register .reg-body .reg-step:first-child { border-top: none; padding-top: 6px; }
+  details.register .reg-body .reg-num {
+    width: 28px; height: 28px;
+    background: var(--brand);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+  }
+  details.register .reg-body .reg-step h4 {
+    margin: 2px 0 6px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    font-family: 'Source Sans 3', sans-serif;
+  }
+  details.register .reg-body .reg-step p { margin: 0 0 12px; }
+  details.register .reg-body .reg-step img {
+    width: 100%;
+    max-width: 560px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 14px rgba(0, 58, 73, 0.10);
+    display: block;
+  }
 
   /* Section headings */
   main h2 {
@@ -312,12 +343,42 @@
   <details class="register" open>
     <summary>Register for Your CRM Account ⬇️</summary>
     <div class="reg-body">
-      <ol>
-        <li><strong>Access Log-in Page</strong> — Navigate to your group login page for TheCRM. Look for the "Register Here" option.</li>
-        <li><strong>Enter Registration Password</strong> — Enter the new user registration password. Typically, our dealership's password is "GoTheCRM", but some dealerships may have a unique password. Contact your dedicated CRM admin or reach out to our support team for assistance.</li>
-        <li><strong>Fill Out User Information</strong> — Provide all the requested details to create your new user account, including your store's area code in the "Desired Direct Connect Area Code" field.</li>
-        <li><strong>Wait for Approval</strong> — Your user profile has been successfully created! If you do not receive a confirmation text within 30 minutes, please reach out to your internal team to finalize and approve your access.</li>
-      </ol>
+
+      <div class="reg-step">
+        <div class="reg-num">1</div>
+        <div>
+          <h4>Access the Log-in Page</h4>
+          <p>Navigate to <a href="https://bishsrv.thecrm.com/login/" target="_blank" rel="noopener">bishsrv.thecrm.com/login</a> and look for the <strong>"New User? Register Here"</strong> link below the Sign In button.</p>
+          <img src="assets/step1-login.png" alt="TheCRM login page showing the Register Here link" loading="lazy" />
+        </div>
+      </div>
+
+      <div class="reg-step">
+        <div class="reg-num">2</div>
+        <div>
+          <h4>Enter the Registration Password</h4>
+          <p>On the <strong>New User Registration</strong> screen, enter the dealership password provided to you. At Bish's RV, the password is typically <strong>"GoTheCRM"</strong>. If it doesn't work, contact your CRM admin or reach out to support. Click <strong>Continue</strong>.</p>
+          <img src="assets/step2-register-password.png" alt="New User Registration password prompt" loading="lazy" />
+        </div>
+      </div>
+
+      <div class="reg-step">
+        <div class="reg-num">3</div>
+        <div>
+          <h4>Fill Out Your User Information</h4>
+          <p>Complete your profile — first/middle/last name, mobile phone, work email, store details, and so on. Be sure to enter your store's area code in the <em>"Desired DirectConnect Area Code"</em> field. Then set your username and password and click <strong>Sign Up</strong>.</p>
+          <img src="assets/step3-user-info-form.png" alt="Fill In Your Profile form with user and store details" loading="lazy" />
+        </div>
+      </div>
+
+      <div class="reg-step">
+        <div class="reg-num">4</div>
+        <div>
+          <h4>Wait for Approval</h4>
+          <p>Your user profile has been created. If you do not receive a confirmation text within 30 minutes, reach out to your internal team to finalize and approve your access.</p>
+        </div>
+      </div>
+
     </div>
   </details>
 
