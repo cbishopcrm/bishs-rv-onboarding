@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@700;800;900&display=swap');
+  body {
+    margin: 0;
+    width: 1200px;
+    height: 630px;
+    font-family: 'Source Sans 3', sans-serif;
+    color: #fff;
+    background:
+      linear-gradient(135deg, rgba(0, 58, 73, 0.92), rgba(0, 90, 112, 0.85)),
+      url('../assets/hero-road.jpg') center/cover;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 64px 72px;
+    box-sizing: border-box;
+    border-bottom: 12px solid #8B762E;
+  }
+  body::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 80% 20%, rgba(139, 118, 46, 0.3), transparent 50%),
+      radial-gradient(circle at 15% 80%, rgba(0, 90, 112, 0.6), transparent 55%);
+    pointer-events: none;
+  }
+  .top, .bottom { position: relative; z-index: 1; }
+  .logo {
+    height: 90px;
+    filter: brightness(0) invert(1);
+    display: block;
+  }
+  .eyebrow {
+    display: inline-block;
+    font-size: 22px;
+    font-weight: 800;
+    color: #8B762E;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    padding: 10px 22px;
+    border: 2.5px solid #8B762E;
+    margin-top: 28px;
+  }
+  h1 {
+    font-size: 100px;
+    font-weight: 900;
+    line-height: 0.98;
+    margin: 24px 0 16px;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    text-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  }
+  h1 span { color: #8B762E; }
+  p {
+    font-size: 26px;
+    color: #d1dde3;
+    margin: 0;
+    max-width: 880px;
+    font-weight: 500;
+  }
+  .bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .site {
+    font-size: 22px;
+    color: #8B762E;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .tag {
+    font-size: 18px;
+    color: #cbd5e1;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+  <div class="top">
+    <img class="logo" src="https://assets-cdn.interactcp.com/bishsrvcountryrvshow/images/bishs/bishs-rv-300x146.png?modified=0815202219112038" />
+    <div class="eyebrow">Where Memories Begin</div>
+    <h1>User Onboarding<br><span>Guide</span></h1>
+    <p>Your step-by-step guide to TheCRM platform — built for the Bish's RV team.</p>
+  </div>
+  <div class="bottom">
+    <div class="site">onboarding.bishs.com</div>
+    <div class="tag">Powered by TheCRM</div>
+  </div>
+</body>
+</html>
