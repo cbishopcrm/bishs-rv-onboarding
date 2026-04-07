@@ -22,7 +22,8 @@
     --bg-alt-2: #f1eee3;
   }
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; scroll-padding-top: 60px; }
+  :target { scroll-margin-top: 60px; }
   body {
     margin: 0;
     font-family: 'Karla', system-ui, -apple-system, sans-serif;
@@ -51,22 +52,49 @@
   }
   .topbar img { height: 62px; width: auto; }
 
-  /* Black pill-style nav accent strip (matches bishs.com nav) */
-  .accent-bar {
+  /* Sticky section nav (black strip with gold underline on active/hover) */
+  .sec-nav {
     background: #1a1a1a;
     border-bottom: 3px solid var(--brand-gold);
-    text-align: center;
-    padding: 10px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 40;
   }
-  .accent-bar span {
+  .sec-nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 12px;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    scrollbar-width: none;
+  }
+  .sec-nav-inner::-webkit-scrollbar { display: none; }
+  .sec-nav-inner a {
     color: #fff;
     font-family: 'Source Sans 3', sans-serif;
     font-weight: 700;
-    font-size: 12px;
-    letter-spacing: 0.18em;
+    font-size: 11.5px;
+    letter-spacing: 0.09em;
     text-transform: uppercase;
+    padding: 14px 14px;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -3px;
+    transition: all .15s ease;
+    text-decoration: none;
+    flex-shrink: 0;
   }
-  .accent-bar .sep { color: var(--brand-gold); margin: 0 10px; }
+  .sec-nav-inner a:hover,
+  .sec-nav-inner a.active {
+    color: var(--brand-gold);
+    border-bottom-color: var(--brand-gold);
+    text-decoration: none;
+  }
+  @media (min-width: 960px) {
+    .sec-nav-inner { justify-content: center; }
+  }
 
   /* ============ Hero ============ */
   .hero {
@@ -138,14 +166,60 @@
     margin: 0 0 18px;
   }
 
-  /* ============ Register steps (compact, no accordion) ============ */
-  .reg-wrap {
+  /* ============ Register steps (collapsible) ============ */
+  details.reg-wrap {
     background: var(--bg-alt);
     border: 1px solid var(--border);
     border-radius: 8px;
-    padding: 24px 26px;
+    padding: 0;
     margin-bottom: 8px;
+    overflow: hidden;
   }
+  details.reg-wrap[open] { padding-bottom: 6px; }
+  details.reg-wrap > summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 18px 26px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--brand-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: #fff;
+    border-bottom: 1px solid transparent;
+    transition: background .2s ease;
+  }
+  details.reg-wrap[open] > summary {
+    border-bottom-color: var(--border);
+    background: #fff;
+  }
+  details.reg-wrap > summary:hover { background: #fafaf5; }
+  details.reg-wrap > summary::-webkit-details-marker { display: none; }
+  details.reg-wrap > summary .reg-summary-left {
+    display: flex; align-items: center; gap: 12px;
+  }
+  details.reg-wrap > summary .reg-badge {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--brand);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+  }
+  details.reg-wrap > summary .reg-chev {
+    font-size: 20px;
+    color: var(--brand);
+    transition: transform .25s ease;
+    line-height: 1;
+  }
+  details.reg-wrap[open] > summary .reg-chev { transform: rotate(180deg); }
+  .reg-inner { padding: 20px 26px 4px; }
   .reg-step {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -405,6 +479,65 @@
   }
   footer a { color: var(--brand-gold); font-weight: 600; }
 
+  /* ============ Back-to-top button ============ */
+  .to-top {
+    position: fixed;
+    right: 22px; bottom: 22px;
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    background: var(--brand);
+    color: #fff;
+    border: none;
+    font-size: 20px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0, 58, 73, 0.35);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0;
+    transform: translateY(12px);
+    pointer-events: none;
+    transition: all .25s ease;
+    z-index: 60;
+  }
+  .to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .to-top:hover { background: var(--brand-dark); transform: translateY(-2px); }
+
+  /* ============ Lightbox ============ */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 20, 26, 0.92);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    z-index: 100;
+    cursor: zoom-out;
+    backdrop-filter: blur(4px);
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img {
+    max-width: 95%;
+    max-height: 92vh;
+    border-radius: 6px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    border: 2px solid var(--brand-gold);
+  }
+  .lightbox .close {
+    position: absolute;
+    top: 18px; right: 22px;
+    color: #fff;
+    background: rgba(0,0,0,0.5);
+    border: 1.5px solid var(--brand-gold);
+    font-size: 22px;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  img.zoomable { cursor: zoom-in; transition: all .2s ease; }
+  img.zoomable:hover { border-color: var(--brand); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0, 58, 73, 0.18); }
+
   /* ============ Mobile ============ */
   @media (max-width: 720px) {
     .hero { padding: 42px 20px 50px; }
@@ -424,9 +557,22 @@
   <img src="https://assets-cdn.interactcp.com/bishsrvcountryrvshow/images/bishs/bishs-rv-300x146.png?modified=0815202219112038" alt="Bish's RV — Where Memories Begin" />
 </div>
 
-<div class="accent-bar">
-  <span>CRM Onboarding<span class="sep">·</span>Sales Team Resources<span class="sep">·</span>Powered by TheCRM</span>
-</div>
+<nav class="sec-nav" id="sectionNav">
+  <div class="sec-nav-inner">
+    <a href="#register">Register</a>
+    <a href="#welcome">Welcome</a>
+    <a href="#customize">Customize</a>
+    <a href="#features">Features</a>
+    <a href="#communicate">Communicate</a>
+    <a href="#ebrochures">E-Brochures</a>
+    <a href="#credit">Credit Apps</a>
+    <a href="#olivia">Olivia</a>
+    <a href="#basics">Basics</a>
+    <a href="#schedule">Schedule</a>
+    <a href="#app">App</a>
+    <a href="#support">Support</a>
+  </div>
+</nav>
 
 <header class="hero">
   <span class="eyebrow">Where Memories Begin</span>
@@ -437,55 +583,64 @@
 <main>
 
   <!-- ============ 1. Register ============ -->
-  <div class="sec-head"><div class="bar"></div><h2>Register for Your CRM Account</h2></div>
+  <div class="sec-head" id="register"><div class="bar"></div><h2>Register for Your CRM Account</h2></div>
   <p class="sec-lead">Four quick steps to get your login credentials set up and approved.</p>
 
-  <div class="reg-wrap">
+  <details class="reg-wrap">
+    <summary>
+      <span class="reg-summary-left">
+        <span class="reg-badge">4</span>
+        Show the 4 registration steps
+      </span>
+      <span class="reg-chev">⌄</span>
+    </summary>
+    <div class="reg-inner">
 
-    <div class="reg-step">
-      <div class="reg-num">1</div>
-      <div class="reg-step-content">
-        <h3>Access the Log-in Page</h3>
-        <p>Navigate to <a href="https://bishsrv.thecrm.com/login/" target="_blank" rel="noopener">bishsrv.thecrm.com/login</a> and click the <strong>"New User? Register Here"</strong> link under the Sign In button.</p>
-        <img src="assets/step1-login.png" alt="TheCRM login page showing the Register Here link" loading="lazy" />
+      <div class="reg-step">
+        <div class="reg-num">1</div>
+        <div class="reg-step-content">
+          <h3>Access the Log-in Page</h3>
+          <p>Navigate to <a href="https://bishsrv.thecrm.com/login/" target="_blank" rel="noopener">bishsrv.thecrm.com/login</a> and click the <strong>"New User? Register Here"</strong> link under the Sign In button.</p>
+          <img src="assets/step1-login.png" alt="TheCRM login page showing the Register Here link" loading="lazy" class="zoomable" />
+        </div>
       </div>
-    </div>
 
-    <div class="reg-step">
-      <div class="reg-num">2</div>
-      <div class="reg-step-content">
-        <h3>Enter the Registration Password</h3>
-        <p>On the <strong>New User Registration</strong> screen, enter the dealership password. For Bish's RV it's typically <strong>"GoTheCRM"</strong>. If that doesn't work, reach out to your CRM admin. Click <strong>Continue</strong>.</p>
-        <img src="assets/step2-register-password.png" alt="New User Registration password prompt" loading="lazy" />
+      <div class="reg-step">
+        <div class="reg-num">2</div>
+        <div class="reg-step-content">
+          <h3>Enter the Registration Password</h3>
+          <p>On the <strong>New User Registration</strong> screen, enter the dealership password. For Bish's RV it's typically <strong>"GoTheCRM"</strong>. If that doesn't work, reach out to your CRM admin. Click <strong>Continue</strong>.</p>
+          <img src="assets/step2-register-password.png" alt="New User Registration password prompt" loading="lazy" class="zoomable" />
+        </div>
       </div>
-    </div>
 
-    <div class="reg-step">
-      <div class="reg-num">3</div>
-      <div class="reg-step-content">
-        <h3>Fill Out Your Profile</h3>
-        <p>Complete your profile — name, mobile phone, work email, and store details. Make sure to enter your store's area code in the <em>"Desired DirectConnect Area Code"</em> field, then set a username and password and click <strong>Sign Up</strong>.</p>
-        <img class="tall" src="assets/step3-user-info-form.png" alt="Fill In Your Profile form with user and store details" loading="lazy" />
+      <div class="reg-step">
+        <div class="reg-num">3</div>
+        <div class="reg-step-content">
+          <h3>Fill Out Your Profile</h3>
+          <p>Complete your profile — name, mobile phone, work email, and store details. Make sure to enter your store's area code in the <em>"Desired DirectConnect Area Code"</em> field, then set a username and password and click <strong>Sign Up</strong>.</p>
+          <img class="tall zoomable" src="assets/step3-user-info-form.png" alt="Fill In Your Profile form with user and store details" loading="lazy" />
+        </div>
       </div>
-    </div>
 
-    <div class="reg-step">
-      <div class="reg-num">4</div>
-      <div class="reg-step-content">
-        <h3>Wait for Approval</h3>
-        <p>Your profile has been created. If you don't receive a confirmation text within 30 minutes, reach out to your internal team to finalize and approve your access.</p>
+      <div class="reg-step">
+        <div class="reg-num">4</div>
+        <div class="reg-step-content">
+          <h3>Wait for Approval</h3>
+          <p>Your profile has been created. If you don't receive a confirmation text within 30 minutes, reach out to your internal team to finalize and approve your access.</p>
+        </div>
       </div>
-    </div>
 
-  </div>
+    </div>
+  </details>
 
   <!-- ============ 2. Welcome ============ -->
-  <div class="sec-head"><div class="bar"></div><h2>Welcome to TheCRM</h2></div>
+  <div class="sec-head" id="welcome"><div class="bar"></div><h2>Welcome to TheCRM</h2></div>
   <p class="sec-lead">When you first log in, you'll land on your personalized MyDay dashboard — your central hub for everything sales.</p>
 
   <div class="shot-stack">
     <figure class="shot">
-      <img src="assets/salesdaily-cmi.png" alt="SalesDaily CMI dashboard" loading="lazy" />
+      <img src="assets/salesdaily-cmi.png" alt="SalesDaily CMI dashboard" loading="lazy" class="zoomable" />
       <figcaption>
         <h3>SalesDaily CMI</h3>
         <p>Your main daily view — a real-time snapshot of hot leads, follow-ups, confirmation calls, and un-responded texts/emails. This is where you'll spend most of your time.</p>
@@ -493,7 +648,7 @@
     </figure>
 
     <figure class="shot">
-      <img src="assets/cmi-outfitter.png" alt="CMI Outfitter dashboard" loading="lazy" />
+      <img src="assets/cmi-outfitter.png" alt="CMI Outfitter dashboard" loading="lazy" class="zoomable" />
       <figcaption>
         <h3>CMI Outfitter</h3>
         <p>A deeper look at unsold deals, customer VOI price changes, customers you've touched, and unsold leads broken out by model and by salesperson.</p>
@@ -503,7 +658,7 @@
   <p class="note" style="margin-top:10px;">Note: Your MyDay may look slightly different depending on your role and permissions.</p>
 
   <!-- ============ 3. Customize ============ -->
-  <div class="sec-head"><div class="bar"></div><h2>Customize Your CRM Experience</h2></div>
+  <div class="sec-head" id="customize"><div class="bar"></div><h2>Customize Your CRM Experience</h2></div>
   <p class="sec-lead">Personalize your settings and preferences — tailor the platform to your workflow with just a few clicks.</p>
 
   <div class="row">
@@ -515,7 +670,7 @@
   </div>
 
   <!-- ============ 4. Start Using Features ============ -->
-  <div class="sec-head"><div class="bar"></div><h2>Start Using Features</h2></div>
+  <div class="sec-head" id="features"><div class="bar"></div><h2>Start Using Features</h2></div>
   <p class="sec-lead">Add customers from desktop, the mobile app, or just by chatting with OliviaAI.</p>
 
   <div class="row">
@@ -535,26 +690,35 @@
   </div>
 
   <!-- ============ 5. Communicating ============ -->
-  <div class="sec-head"><div class="bar"></div><h2>Communicating With Customers</h2></div>
+  <div class="sec-head" id="communicate"><div class="bar"></div><h2>Communicating With Customers</h2></div>
   <p class="sec-lead">The foundation of strong relationships. TheCRM gives you a full suite of tools to engage professionally and personally.</p>
 
-  <div class="mini-list">
+  <div class="row">
     <div>
       <h3>📧 Sending Emails</h3>
       <p>Compose and send professional emails — follow-ups, offers, info requests. Olivia is always there to help craft or spell-check your message.</p>
     </div>
+    <div class="video-ph"><span>Sending Emails · Video Placeholder</span></div>
+  </div>
+
+  <div class="row">
+    <div class="video-ph"><span>Sending Texts · Video Placeholder</span></div>
     <div>
       <h3>💬 Sending Texts</h3>
-      <p>Send quick updates, reminders, and personalized messages via SMS directly from TheCRM.</p>
-    </div>
-    <div>
-      <h3>📸 Photos, Videos & Multimedia</h3>
-      <p>Upload and send videos, images, and multimedia — great for showcasing units or adding a personal touch.</p>
+      <p>Send quick updates, appointment reminders, and personalized messages via SMS directly from TheCRM.</p>
     </div>
   </div>
 
+  <div class="row">
+    <div>
+      <h3>📸 Photos, Videos & Multimedia</h3>
+      <p>Upload and send videos, images, and multimedia — great for showcasing units or adding a personal touch to your interactions.</p>
+    </div>
+    <div class="video-ph"><span>Photos & Multimedia · Video Placeholder</span></div>
+  </div>
+
   <!-- ============ 6. E-Brochures ============ -->
-  <div class="sec-head"><div class="bar"></div><h2>E-Brochures</h2></div>
+  <div class="sec-head" id="ebrochures"><div class="bar"></div><h2>E-Brochures</h2></div>
 
   <div class="row">
     <div class="video-ph"><span>How to Send an E-Brochure · Video Placeholder</span></div>
@@ -564,7 +728,7 @@
   </div>
 
   <!-- ============ 7. Credit Applications ============ -->
-  <div class="sec-head"><div class="bar"></div><h2>Moving Closer to a Purchase</h2></div>
+  <div class="sec-head" id="credit"><div class="bar"></div><h2>Moving Closer to a Purchase</h2></div>
   <p class="sec-lead">Streamline the buying process with secure credit applications sent via text or email.</p>
 
   <div class="row">
@@ -584,7 +748,7 @@
   </div>
 
   <!-- ============ 8. Olivia ============ -->
-  <div class="sec-head"><div class="bar"></div><h2>Meet Olivia AI</h2></div>
+  <div class="sec-head" id="olivia"><div class="bar"></div><h2>Meet Olivia AI</h2></div>
 
   <div class="row">
     <div>
@@ -594,7 +758,7 @@
   </div>
 
   <!-- ============ 9. CRM Basics ============ -->
-  <div class="sec-head"><div class="bar"></div><h2>CRM Basics: How Do I…?</h2></div>
+  <div class="sec-head" id="basics"><div class="bar"></div><h2>CRM Basics: How Do I…?</h2></div>
   <p class="sec-lead">Step-by-step guidance on the most common tasks in TheCRM.</p>
 
   <div class="row">
@@ -622,7 +786,7 @@
   </div>
 
   <!-- ============ 10. Scheduling ============ -->
-  <div class="sec-head"><div class="bar"></div><h2>Schedule with Ease</h2></div>
+  <div class="sec-head" id="schedule"><div class="bar"></div><h2>Schedule with Ease</h2></div>
   <p class="sec-lead">Streamline your follow-up. Book, confirm, reschedule, or cancel appointments directly inside TheCRM.</p>
 
   <div class="row">
@@ -650,7 +814,7 @@
   </div>
 
   <!-- ============ 11. Download App ============ -->
-  <div class="sec-head"><div class="bar"></div><h2>Download TheCRM App</h2></div>
+  <div class="sec-head" id="app"><div class="bar"></div><h2>Download TheCRM App</h2></div>
   <p class="sec-lead">Experience the full power of TheCRM on mobile — barcode scanning, VIN capture, direct image uploads, and more.</p>
 
   <div class="app-btns">
@@ -659,7 +823,7 @@
   </div>
 
   <!-- ============ 12. Support ============ -->
-  <div class="sec-head"><div class="bar"></div><h2>Get Support</h2></div>
+  <div class="sec-head" id="support"><div class="bar"></div><h2>Get Support</h2></div>
 
   <div class="support-grid">
     <div class="support-card">
@@ -686,7 +850,49 @@
   </div>
 </footer>
 
-<script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+<button class="to-top" id="toTop" aria-label="Back to top" title="Back to top">↑</button>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-label="Image viewer">
+  <button class="close" id="lbClose" aria-label="Close">✕</button>
+  <img id="lbImg" src="" alt="" />
+</div>
+
+<script>
+  // Year
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // Back to top
+  const toTop = document.getElementById('toTop');
+  const toggleToTop = () => toTop.classList.toggle('visible', window.scrollY > 400);
+  window.addEventListener('scroll', toggleToTop, { passive: true });
+  toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // Lightbox
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  const openLb = (src, alt) => { lbImg.src = src; lbImg.alt = alt || ''; lb.classList.add('open'); document.body.style.overflow = 'hidden'; };
+  const closeLb = () => { lb.classList.remove('open'); lbImg.src = ''; document.body.style.overflow = ''; };
+  document.querySelectorAll('img.zoomable').forEach(img => {
+    img.addEventListener('click', () => openLb(img.src, img.alt));
+  });
+  lb.addEventListener('click', closeLb);
+  document.getElementById('lbClose').addEventListener('click', e => { e.stopPropagation(); closeLb(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
+
+  // Section nav — highlight active on scroll
+  const navLinks = document.querySelectorAll('.sec-nav-inner a');
+  const sections = Array.from(navLinks).map(a => document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
+  const onScroll = () => {
+    const y = window.scrollY + 120;
+    let current = sections[0];
+    for (const s of sections) {
+      if (s.offsetTop <= y) current = s;
+    }
+    navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current.id));
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>
 
 </body>
 </html>
